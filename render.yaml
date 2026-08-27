@@ -1,0 +1,31 @@
+# Render Blueprint for the lpinvestors app.
+#
+# Mirrors dtfunding's convention: the database schema is NOT Prisma-managed
+# -- db/migrations/*.sql are applied separately (see db/README.md and
+# scripts/apply-migrations.sh), not as part of this build step. The build
+# only needs `prisma generate` (regenerating the client from the schema
+# already committed at prisma/schema.prisma), never `prisma migrate deploy`
+# or `prisma db pull` -- pulling from the production DB during a build
+# would make the committed schema.prisma not match what's actually
+# deployed.
+#
+# Apply/refresh migrations manually via `npm run db:migrate` (targeting the
+# production DATABASE_URL) before deploying a change that depends on them.
+#
+# --include=dev: NODE_ENV=production below is applied during the build too,
+# and npm skips devDependencies under NODE_ENV=production -- but the build
+# itself (next build, tailwindcss/postcss, typescript) needs them present.
+services:
+  - type: web
+    name: lpinvestors
+    runtime: node
+    plan: free
+    buildCommand: npm install --include=dev && npx prisma generate && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: AUTH_PASSWORD
+        sync: false
+      - key: NODE_ENV
+        value: production

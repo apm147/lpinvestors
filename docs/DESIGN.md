@@ -191,11 +191,10 @@ whole point of the pipeline. Phase 5 is ongoing background work, not a blocker.
 Design decisions I made a default call on rather than blocking on — flag if any should
 change:
 
-1. **Tech stack.** Assumed **Postgres + Python**, matching QUILT's stated "Postgres
-   dimensional model" and `dtfunding`'s Companies House filing parsing. Not confirmed
-   for this repo specifically — is there a stack `dtfunding`/QUILT actually use that
-   this module should match exactly (ORM, migration tool, language), or is this repo
-   free to choose?
+1. ~~**Tech stack.**~~ **Resolved:** Next.js (TypeScript) on Render + Neon, matching
+   `dtfunding` and `founderfluence` (not QUILT's Postgres+Python). See §10 for the
+   concrete conventions this repo now follows and where the two sibling repos diverge
+   from each other.
 2. **Repo/data boundary.** Does `dtfunding`'s SH01/CS01/PSC extraction live in a
    repo this module can import or call directly, or does the govt LP list build reuse
    it. There's actual code to reuse, or is "reuse" here closer to "the parsing logic
@@ -210,3 +209,59 @@ change:
    over time." Confirm that's still fine, or is NSSIF's inclusion in the pipeline
    diagram signal that it needs a dedicated sourcing push sooner (e.g. individual deal
    press coverage rather than institutional pages).
+
+## 10. Tech stack and conventions (resolved)
+
+Render + Neon, matching `dtfunding` and `founderfluence` (both on that pairing; QUILT
+alone is plain Postgres+Python and is the outlier, not the pattern to follow). Language:
+Node.js/TypeScript, per direct instruction.
+
+Cloned both sibling repos to confirm actual conventions rather than guessing:
+
+| | `dtfunding` | `founderfluence` | **This repo** |
+|---|---|---|---|
+| Framework | Next.js (App Router) + TS | Next.js (App Router) + TS | Next.js (App Router) + TS |
+| DB | Neon Postgres | Neon Postgres | Neon Postgres |
+| Hosting | Render (`render.yaml` blueprint) | Render (dashboard-configured, no blueprint) | Render (`render.yaml` blueprint) |
+| Schema source of truth | Hand-written numbered SQL (`db/migrations/*.sql`) | Prisma-managed (`prisma migrate`) | **Hand-written numbered SQL** |
+| Prisma's role | Read layer only, via `prisma db pull` introspection | Full migration ownership | **Read layer only**, via `prisma db pull` |
+| Auth | Single shared-password admin gate (`AUTH_PASSWORD` + proxy) | Same pattern | Same pattern |
+| Keepalive | GitHub Actions cron → `/api/health` (real `SELECT 1`) every 6h | Same pattern | Same pattern |
+| One-off scripts | Python, separate from the Next.js app (e.g. `db/scripts/load_exits_extract.py`) | TypeScript via `tsx` (e.g. `scripts/run-scraper.ts`) | **Both, by task** — see below |
+
+The two sibling repos disagree on schema ownership (`dtfunding`: hand-written SQL;
+`founderfluence`: Prisma-managed). This repo follows **`dtfunding`'s** convention, not
+`founderfluence`'s, because it's the tighter integration partner — same join key, same
+filing types (SH01/CS01/PSC), reused extraction — and because the schema here is dense
+with cross-entity resolution logic (§2, §3) that's easier to reason about and comment as
+hand-written SQL than as an auto-generated migration diff. See `db/README.md` for the
+schema itself under this convention.
+
+**Script language, by task, not by blanket rule:**
+- **Govt LP source monitoring** (Phase 2+: scraping BBB/British Patient
+  Capital/NSSIF/SNIB/NWF pages for LP commitment announcements) — `founderfluence`
+  already solved this exact problem (web scraping + LLM-driven extraction) with
+  `cheerio`/`jsdom`/`@mozilla/readability`/`robots-parser` and `@anthropic-ai/sdk`, run
+  via `tsx` scripts (`scripts/run-scraper.ts`). Adopt that stack directly rather than
+  reinventing it — same language as the app, one dependency tree.
+- **One-off bulk/structured data loads** (e.g. importing a CS01/PSC bulk extract, or a
+  Companies House bulk data dump) — `dtfunding`'s pattern of a standalone Python script
+  under `db/scripts/` is the better fit if the source data or a reusable parsing library
+  is more naturally Python (e.g. reusing `dtfunding`'s own CS01/PSC parsing directly,
+  per open question #2 above). Not yet needed; revisit once Phase 3 (cap-table
+  integration) is actually being built and it's clear whether `dtfunding`'s extraction
+  is imported as a library or re-implemented.
+
+**What's scaffolded now, in this repo:** `package.json`, `tsconfig.json`,
+`next.config.ts`, `eslint.config.mjs`, `postcss.config.mjs`, `prisma.config.ts`,
+`render.yaml`, `.env.example`, `.github/workflows/keepalive.yml`,
+`scripts/apply-migrations.sh`, the full `db/migrations/*.sql` schema (§3 above,
+translated to SQL — see `db/README.md`), and a minimal app shell (`/api/health`,
+shared-password login, a placeholder home page) — all copied structurally from
+`dtfunding`, adapted to this module's schema.
+
+**What's not done yet, deliberately:** no `npm install` / build validation has been run
+against this scaffold — the environment this was drafted in cannot reach the npm
+registry (see root `README.md`). No actual ingestion code (govt LP monitors, PSC/CS01
+parsing, entity resolution logic) — that's Phase 1+ per §8, not part of "initial
+design, features and functionality."
