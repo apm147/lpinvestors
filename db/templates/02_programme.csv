@@ -1,0 +1,2 @@
+ref_key,name,parent_org_ref,disclosure_url,confidence,notes
+prog_bgp,British Growth Partnership Fund I,org_bbb,https://example.org/REPLACE-with-real-disclosure-url,high,"EXAMPLE row - see docs/data-sources.md for real BGP Fund I detail; delete before loading real data"
