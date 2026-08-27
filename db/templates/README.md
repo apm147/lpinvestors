@@ -1,9 +1,12 @@
 # Data entry templates
 
 CSV templates for hand-populating the investor graph — one file per table in
-[`db/migrations/`](../migrations), matching its columns exactly. Fill these in
-(e.g. from government LP list monitoring or cap-table extraction done by hand),
-then load them into `lpinvestors_test` / the production database.
+[`db/migrations/`](../migrations), matching its columns exactly. These currently
+carry the first real Phase 2 seed data (docs/DESIGN.md #8: "seed govt LP list
+from high-confidence sources — BBB/BPC, BGP Fund I") rather than a placeholder
+example — see [Current seed data](#current-seed-data) below. Append further
+rows the same way as you source more (government LP list monitoring, cap-table
+extraction), then load them into `lpinvestors_test` / the production database.
 
 **No load script exists yet** — populating these is Phase 1/2 work
 ([`docs/DESIGN.md`](../../docs/DESIGN.md#8-phased-roadmap)), the load script
@@ -78,11 +81,36 @@ loader; until then, resolve it yourself.
     `voting-rights-25-to-50-percent` (and the 50–75 / 75–100 variants),
     `right-to-appoint-and-remove-directors`, `significant-influence-or-control`.
 
-## Before you load
+## Current seed data
 
-Every file ships with one `EXAMPLE` row showing the expected shape — some
-drawn from real, cited detail in [`docs/data-sources.md`](../../docs/data-sources.md)
-(British Growth Partnership Fund I's first close and named LPs), the rest
-(the portfolio company, the PSC individual, all `source_url` values) clearly
-marked fictional/placeholder because the source docs don't name them.
-**Delete the example rows before adding real data** — keep the header row.
+5 orgs, 2 programmes, 2 funds, 4 commitments, 1 investment, 2 aliases — every
+`source_url` is a live, real citation (mostly the British Business Bank's own
+press releases), found via web search in the session that populated this and
+cross-checked against multiple independent outlets (UKTN, Pensions Expert,
+IPE, Pensions Age) rather than fetched and read directly — the primary-source
+pages themselves weren't reachable from that session's network, so **spot-check
+the two BBB URLs below before treating figures as final**:
+
+- **BPC → Tapestry VC Fund III**: £40m cornerstone commitment, 1 Jul 2026.
+- **BGP Fund I**: £200m first close, 1 Apr 2026, named LPs Aegon UK, NatWest
+  Cushon, M&G — no per-LP amount disclosed (`amount_gbp` left blank on all
+  three, honestly — not a gap in this template).
+- **BGP Fund I → Wayve**: its first investment, £8m of BBB's wider £25m
+  Wayve round (1 Apr 2026) — the one non-empty `investment` row currently
+  here. `v_govt_backed_cascade` correctly returns nothing for it, since
+  `org.is_quilt_tagged` for Wayve is left `false` — that flag is meant to
+  come from a QUILT read-join (docs/DESIGN.md #3) this repo doesn't have
+  built yet, not something to assert by hand.
+- **`org_alias`**: `"BBB"` → British Business Bank, and `"Cushon Master
+  Trust"` → NatWest Cushon — a real instance of the exact name-variant
+  problem entity resolution exists to solve (BBB's own release says
+  "NatWest Cushon"; three other outlets independently call the same entity
+  "Cushon Master Trust").
+
+Known gaps, left blank rather than guessed: BBB's and Wayve's own `crn`,
+Tapestry VC's `gp_org_id` (its GP entity isn't modeled as an `org` here),
+and no PSC/`person` data at all — none was in scope for this pass.
+
+Every new row you add the same way: give it a `ref_key`, use `crn:...` only
+once the target already exists in the live DB, and cite a real `source_url`
+— never a placeholder that looks like one.

@@ -1,2 +1,5 @@
 funder_org_ref,programme_ref,fund_ref,amount_gbp,commit_date,source_url,confidence
-org_aegon,prog_bgp,fund_bgp1,,2026-04-01,https://example.org/REPLACE-with-real-source-url,high
+org_bbb,prog_bpc,fund_tapestry,40000000,2026-07-01,https://www.british-business-bank.co.uk/news-and-events/news/british-business-bank-makes-cornerstone-commitment-40m-tapestry-vc-fund-iii-support-repeat-founders,high
+org_aegon,prog_bgp,fund_bgp1,,2026-04-01,https://www.british-business-bank.co.uk/news-and-events/news/three-uk-pension-funds-invest-uk-venture-capital-through-british-business-bank,high
+org_cushon,prog_bgp,fund_bgp1,,2026-04-01,https://www.british-business-bank.co.uk/news-and-events/news/three-uk-pension-funds-invest-uk-venture-capital-through-british-business-bank,high
+org_mg,prog_bgp,fund_bgp1,,2026-04-01,https://www.british-business-bank.co.uk/news-and-events/news/three-uk-pension-funds-invest-uk-venture-capital-through-british-business-bank,high

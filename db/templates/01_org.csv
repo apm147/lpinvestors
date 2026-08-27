@@ -1,4 +1,6 @@
 ref_key,canonical_name,crn,org_kind,is_quilt_tagged
 org_bbb,British Business Bank,,government_body,false
 org_aegon,Aegon UK,,pension_provider,false
-org_acme,EXAMPLE - Acme Quantum Ltd (fictional; replace with a real QUILT-tagged company),00000000,company,true
+org_cushon,NatWest Cushon,,pension_provider,false
+org_mg,M&G,,pension_provider,false
+org_wayve,Wayve,,company,false

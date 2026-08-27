@@ -1,2 +1,3 @@
 raw_name,org_ref,fund_ref,source,resolved_by
-BBB,org_bbb,,EXAMPLE - press release name variant,alias_table
+BBB,org_bbb,,docs/data-sources.md -- standard abbreviation used interchangeably with the full name,manual_review
+Cushon Master Trust,org_cushon,,"Press coverage variant (Pensions Expert, IPE, UKTN) for NatWest Cushon -- same entity, BBB's own 1 Apr 2026 release uses ""NatWest Cushon""",manual_review
