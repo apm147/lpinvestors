@@ -95,34 +95,40 @@ it. `crn:` lookups only work for `org` and `fund` (the only tables with a
 
 ## Current seed data
 
-5 orgs, 2 programmes, 2 funds, 4 commitments, 1 investment, 2 aliases — every
-`source_url` is a live, real citation (mostly the British Business Bank's own
-press releases), found via web search in the session that populated this and
-cross-checked against multiple independent outlets (UKTN, Pensions Expert,
-IPE, Pensions Age) rather than fetched and read directly — the primary-source
-pages themselves weren't reachable from that session's network, so **spot-check
-the two BBB URLs below before treating figures as final**:
+Two batches, both real and cited, no placeholder rows left:
 
-- **BPC → Tapestry VC Fund III**: £40m cornerstone commitment, 1 Jul 2026.
-- **BGP Fund I**: £200m first close, 1 Apr 2026, named LPs Aegon UK, NatWest
-  Cushon, M&G — no per-LP amount disclosed (`amount_gbp` left blank on all
-  three, honestly — not a gap in this template).
-- **BGP Fund I → Wayve**: its first investment, £8m of BBB's wider £25m
-  Wayve round (1 Apr 2026) — the one non-empty `investment` row currently
-  here. `v_govt_backed_cascade` correctly returns nothing for it, since
-  `org.is_quilt_tagged` for Wayve is left `false` — that flag is meant to
-  come from a QUILT read-join (docs/DESIGN.md #3) this repo doesn't have
-  built yet, not something to assert by hand.
-- **`org_alias`**: `"BBB"` → British Business Bank, and `"Cushon Master
-  Trust"` → NatWest Cushon — a real instance of the exact name-variant
-  problem entity resolution exists to solve (BBB's own release says
-  "NatWest Cushon"; three other outlets independently call the same entity
-  "Cushon Master Trust").
+**Govt LP seed** (top-down) — British Business Bank, British Patient Capital →
+Tapestry VC Fund III (£40m), British Growth Partnership Fund I's £200m first
+close (LPs Aegon UK, NatWest Cushon, M&G, no per-LP amount disclosed). See git
+history on this file for the original citations.
 
-Known gaps, left blank rather than guessed: BBB's and Wayve's own `crn`,
-Tapestry VC's `gp_org_id` (its GP entity isn't modeled as an `org` here),
-and no PSC/`person` data at all — none was in scope for this pass.
+**AI-sector investor pilot** (bottom-up, `docs/research-briefs/ai-sector-investor-pilot.md`)
+— company-centric cap-table research for ~13 UK AI companies (Wayve, Riverlane,
+Congenica, Ieso, Exscientia, Featurespace, Oxa/Oxbotica, Five AI, Kheiron/
+DeepHealth UK, Mind Foundry, Advai), run via Cowork against the prompt in that
+brief. 111 orgs, 5 funds, 4 PSC individuals, 109 investment rows, 15 aliases.
+`is_quilt_tagged` is left `false` throughout, same reasoning as before — none
+of these companies' QUILT status has been confirmed against a live join.
 
-Every new row you add the same way: give it a `ref_key`, use `crn:...` only
-once the target already exists in the live DB, and cite a real `source_url`
-— never a placeholder that looks like one.
+Two things worth knowing before querying this data:
+
+- **Wayve's Feb 2026 mega-round is recorded as two investment rows that
+  overlap, not two separate slices of capital**: `British Growth Partnership
+  Fund I → Wayve` (£8m, from BBB's own 1 Apr 2026 release) and `British
+  Business Bank → Wayve` (from TechCrunch's coverage of the same round,
+  reporting BBB's total ~£25m without breaking out the BGP-specific portion).
+  The `source_filing` on the BGP row says so explicitly — **don't sum both
+  when totaling round capital**, the £8m is a subset of the £25m, not
+  additional to it.
+- Several `org_alias` rows here resolve a **legal restructuring**, not just a
+  spelling variant — Draper Esprit → Molten Ventures (a 2021 rebrand),
+  Touchstone Innovations / Imperial Innovations Group → IP Group (a historical
+  merger). Distinct from cases like `org_exscientia_ltd` vs `org_exscientia_ai`
+  or `org_ieso` vs `org_ieso_uk_sub`, which are real, currently-distinct legal
+  entities (different CRNs, parent vs. UK subsidiary) correctly kept as
+  separate `org` rows rather than aliased together.
+
+Every new row you add the same way: give it a `ref_key` unique across the
+whole file (not just your own batch), use `crn:...` only once the target
+already exists in the live DB, and cite a real `source_url` — never a
+placeholder that looks like one.

@@ -1,3 +1,16 @@
 raw_name,org_ref,fund_ref,source,resolved_by
 BBB,org_bbb,,docs/data-sources.md -- standard abbreviation used interchangeably with the full name,manual_review
 Cushon Master Trust,org_cushon,,"Press coverage variant (Pensions Expert, IPE, UKTN) for NatWest Cushon -- same entity, BBB's own 1 Apr 2026 release uses ""NatWest Cushon""",manual_review
+Draper Esprit,org_moltenventures,,https://www.uktech.news/news/leading-european-vc-draper-esprit-rebrands-molten-ventures-20211109,alias_table
+Touchstone Innovations,org_ipgroup,,https://assets.publishing.service.gov.uk/media/5a02f94e40f0b60b048399ea/IP-group-touchstone-full-text-decision.pdf,alias_table
+Imperial Innovations Group,org_ipgroup,,https://assets.publishing.service.gov.uk/media/5a02f94e40f0b60b048399ea/IP-group-touchstone-full-text-decision.pdf,alias_table
+SoftBank Group,org_softbank,,https://wayve.ai/press/series-c/,alias_table
+Oxford Sciences Innovation,org_oxfordscienceenterprises,,https://find-and-update.company-information.service.gov.uk/company/09882159/persons-with-significant-control,alias_table
+Kiko Ventures (IP Group),org_ipgroup,,https://www.ipgroupplc.com/news-and-events/ip-group-news/2022/22-06-2022,alias_table
+Merian Chrysalis,,fund_chrysalis,https://portfolio-adviser.com/merian-chrysalis-shuns-jupiter-moniker-in-rebrand/,alias_table
+Kindred,org_kindredcapital,,https://www.uktech.news/news/cambridge-driverless-car-startup-fiveai-secures-14m-series-20170906,alias_table
+Oxbotica,org_oxa,,https://find-and-update.company-information.service.gov.uk/company/09242359,alias_table
+Kheiron Medical Technologies,org_kheiron,,https://find-and-update.company-information.service.gov.uk/company/10184103,alias_table
+River Lane Research Ltd,org_riverlane,,https://find-and-update.company-information.service.gov.uk/company/10260255,alias_table
+Cambridge Innovation Capital (Jersey) Limited,org_cic,,https://find-and-update.company-information.service.gov.uk/company/10260255/persons-with-significant-control,manual_review
+Ocado Ventures (Oxbotica) Limited,org_ocadogroup,,https://find-and-update.company-information.service.gov.uk/company/12796767,manual_review
