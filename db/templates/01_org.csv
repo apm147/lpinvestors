@@ -1,0 +1,112 @@
+ref_key,canonical_name,crn,org_kind,is_quilt_tagged
+org_bbb,British Business Bank,,government_body,false
+org_aegon,Aegon UK,,pension_provider,false
+org_cushon,NatWest Cushon,,pension_provider,false
+org_mg,M&G,,pension_provider,false
+org_wayve,Wayve Technologies Ltd,10924127,company,false
+org_riverlane,Riverlane Ltd,10260255,company,false
+org_congenica,Congenica Ltd,08273616,company,false
+org_ieso,Ieso Digital Health Limited,04063351,company,false
+org_ieso_uk_sub,Ieso Digital Health (UK) Limited,10291122,company,false
+org_exscientia_ltd,Exscientia Limited,13483814,company,false
+org_exscientia_ai,Exscientia AI Limited,SC428761,company,false
+org_featurespace,Featurespace Limited,05640420,company,false
+org_oxa,Oxa Autonomy Ltd,09242359,company,false
+org_five,Five AI Limited,10423075,company,false
+org_kheiron,DeepHealth UK Limited,10184103,company,false
+org_mindfoundry,Mind Foundry Limited,09882159,company,false
+org_advai,Advai Ltd,12540124,company,false
+org_eclipse,Eclipse Ventures,,gp,false
+org_balderton,Balderton Capital,,gp,false
+org_d1capital,D1 Capital Partners,,gp,false
+org_bailliegifford,Baillie Gifford,,gp,false
+org_moorestrategic,Moore Strategic Ventures,,gp,false
+org_linsecapital,Linse Capital,,gp,false
+org_compound,Compound,,gp,false
+org_icehouse,Icehouse Ventures,,gp,false
+org_schroderscapital,Schroders Capital,,gp,false
+org_softbank,SoftBank Group Corp,,gp,false
+org_cic,Cambridge Innovation Capital,,gp,false
+org_amadeus,Amadeus Capital Partners,,gp,false
+org_moltenventures,Molten Ventures,,gp,false
+org_planetfirst,Planet First Partners,,gp,false
+org_etfpartners,ETF Partners,,gp,false
+org_ipgroup,IP Group plc,,gp,false
+org_parkwalk,Parkwalk Advisors Ltd,,gp,false
+org_xeraya,Xeraya Capital,,gp,false
+org_puhua,Puhua Capital,,gp,false
+org_idoinvestments,IDO Investments,,gp,false
+org_downing,Downing LLP,,gp,false
+org_ananda,Ananda Impact Ventures,,gp,false
+org_gthealthcare,GT Healthcare Capital Partners,,gp,false
+org_novoholdings,Novo Holdings,,gp,false
+org_blackrock,BlackRock,,gp,false
+org_morningside,Morningside,,gp,false
+org_ttvcapital,TTV Capital,,gp,false
+org_highlandeurope,Highland Europe,,gp,false
+org_invokecapital,Invoke Capital,,gp,false
+org_insightpartners,Insight Partners,,gp,false
+org_missionog,MissionOG,,gp,false
+org_merianglobal,Merian Global Investors,,gp,false
+org_bpventures,bp ventures,,gp,false
+org_bgf,BGF,,gp,false
+org_venturescience,Venture Science,,gp,false
+org_eneosinnovation,ENEOS Innovation Partners,,gp,false
+org_nventures,NVentures (NVIDIA venture arm),,gp,false
+org_trustbridge,Trustbridge Partners,,gp,false
+org_sistemavc,Sistema VC,,gp,false
+org_lakestar,Lakestar,,gp,false
+org_notioncapital,Notion Capital,,gp,false
+org_kindredcapital,Kindred Capital,,gp,false
+org_atomico,Atomico,,gp,false
+org_greycroft,Greycroft,,gp,false
+org_connectventures,Connect Ventures,,gp,false
+org_hoxtonventures,Hoxton Ventures,,gp,false
+org_exorseeds,Exor Seeds,,gp,false
+org_oxfordscienceenterprises,Oxford Science Enterprises Plc,,gp,false
+org_cylonventures,CyLon Ventures,,gp,false
+org_creativedestructionlab,Creative Destruction Lab,,gp,false
+org_frontieripgroup,Frontier IP Group plc,,gp,false
+org_microsoft,Microsoft Corporation,,company,false
+org_virgingroup,Virgin Group,,company,false
+org_ocadogroup,Ocado Group plc,,company,false
+org_nvidia,NVIDIA Corporation,,company,false
+org_uber,"Uber Technologies, Inc.",,company,false
+org_mercedesbenz,Mercedes-Benz Group AG,,company,false
+org_nissan,"Nissan Motor Co., Ltd.",,company,false
+org_stellantis,Stellantis N.V.,,company,false
+org_altair,Altair Engineering,,company,false
+org_edbi,EDBI,,company,false
+org_bgigenomics,BGI Genomics,,company,false
+org_dchealth,Digital China Health Technologies Corporation Ltd,,company,false
+org_tencent,Tencent,,company,false
+org_bms,Bristol Myers Squibb,,company,false
+org_celgene,Celgene Corporation,,company,false
+org_evotec,Evotec AG,,company,false
+org_sonyinnovationfund,Sony Innovation Fund,,company,false
+org_halma,Halma plc,,company,false
+org_axaxl,AXA XL,,company,false
+org_aioinissaydowa,"Aioi Nissay Dowa Insurance Co., Ltd.",,company,false
+org_zf,ZF Friedrichshafen AG,,company,false
+org_google,Google / Alphabet Inc.,,company,false
+org_directline,Direct Line Group,,company,false
+org_worldpay,Worldpay Group plc,,company,false
+org_visa,Visa Inc.,,company,false
+org_radnet,"RadNet, Inc.",,company,false
+org_recursion,"Recursion Pharmaceuticals, Inc.",,company,false
+org_mindler,Mindler Ltd,,company,false
+org_bosch,Robert Bosch GmbH,,company,false
+org_nssif,National Security Strategic Investment Fund,,government_body,false
+org_nwf,National Wealth Fund,,government_body,false
+org_mubadala,Mubadala Investment Company,,government_body,false
+org_otpp,Ontario Teachers' Pension Plan,,pension_provider,false
+org_landg,Legal & General,,pension_provider,false
+org_hostplus,Hostplus,,pension_provider,false
+org_ukcambridge,University of Cambridge,,other,false
+org_cambridgeenterprise,Cambridge Enterprise,,other,false
+org_ukoxford,University of Oxford,,other,false
+org_cambridgeangels,Cambridge Angels,,other,false
+org_nesta,Nesta,,other,false
+org_amd,"Advanced Micro Devices, Inc. (AMD)",,company,false
+org_arm,Arm Holdings plc,,company,false
+org_qualcommventures,Qualcomm Ventures,,gp,false

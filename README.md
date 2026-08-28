@@ -57,13 +57,12 @@ auth — `AUTH_PASSWORD` gates the whole app via `src/proxy.ts`.
 `/api/health` runs a real `SELECT 1` against the database, for use by an
 uptime/keepalive check.
 
-> **Note on this initial scaffold:** the sandbox this repo was drafted in cannot reach
-> the npm registry (network policy — same class of limitation `dtfunding`'s README
-> documents for Neon/Render access), so `npm install` and a build/typecheck pass haven't
-> been run against this scaffold yet. Every config file, migration, and source file was
-> written by hand against `dtfunding`'s working equivalent, but treat the first
-> `npm install && npm run build` on a machine with real registry access as the actual
-> verification step.
+> **Scaffold verified.** `npm install`, `npm run db:migrate` against a local Postgres,
+> `tsc --noEmit`, `npm run lint`, `npm run build`, and `npm run dev` (with `/api/health`
+> returning `{"ok":true}` and `/login` reachable) all pass. The earlier note here said
+> this hadn't been checked because the sandbox that drafted the scaffold couldn't reach
+> the npm registry — that's since been re-run on a machine with real registry access and
+> confirmed clean.
 
 ## Deployment
 
