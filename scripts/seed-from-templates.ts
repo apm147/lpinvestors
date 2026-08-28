@@ -79,12 +79,37 @@ class RefResolver {
     }
 
     const id = this.maps[kind].get(r);
-    if (id === undefined) {
-      throw new Error(
-        `${context}: ref_key "${r}" not found among this batch's ${kind} rows (and isn't a "crn:" lookup)`
-      );
+    if (id !== undefined) return id;
+
+    // Not a ref_key in this batch -- try it as a raw name against what the
+    // database already knows: an exact canonical_name match, then the
+    // org_alias lookup table. This is what lets a name resolved once (by an
+    // earlier batch, or by hand) get reused automatically instead of every
+    // future CSV needing to already know its ref_key or crn -- see
+    // src/lib/entity-resolution.ts, which implements the same lookup for
+    // the app (kept separate because this needs to run inside this script's
+    // own transaction via the raw `pg` Client, not Prisma).
+    if (kind === "org" || kind === "fund") {
+      const resolved = await this.resolveByName(kind, r);
+      if (resolved !== null) return resolved;
     }
-    return id;
+
+    throw new Error(
+      `${context}: ref_key "${r}" not found among this batch's ${kind} rows (and isn't a "crn:" lookup or a known canonical_name/alias)`
+    );
+  }
+
+  private async resolveByName(kind: "org" | "fund", name: string): Promise<string | null> {
+    const table = kind;
+    const direct = await this.client.query(`SELECT id FROM ${table} WHERE canonical_name = $1`, [name]);
+    if (direct.rows.length > 0) return direct.rows[0].id as string;
+
+    const aliasCol = kind === "org" ? "org_id" : "fund_id";
+    const alias = await this.client.query(
+      `SELECT ${aliasCol} AS id FROM org_alias WHERE raw_name = $1 AND ${aliasCol} IS NOT NULL LIMIT 1`,
+      [name]
+    );
+    return alias.rows.length > 0 ? (alias.rows[0].id as string) : null;
   }
 }
 

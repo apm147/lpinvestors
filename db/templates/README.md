@@ -67,6 +67,19 @@ it. `crn:` lookups only work for `org` and `fund` (the only tables with a
 `crn` column); there's no natural key to look up an existing `person` or
 `programme` by, so those must always get a fresh `ref_key` row here.
 
+**A third option, for `org`/`fund` only: just use the real name.** If a
+`*_org_ref` / `*_fund_ref` value isn't a `ref_key` in the current batch and
+isn't a `crn:` lookup, the loader falls back to matching it against the
+database's `canonical_name` values, then the `org_alias` lookup table —
+so "Draper Esprit" resolves to Molten Ventures without you needing to know
+that's the ref_key or CRN it was loaded under. This is the actual point of
+`org_alias`: a name resolved once (by a prior batch, or by hand) doesn't need
+re-resolving by hand every time it recurs — see `src/lib/entity-resolution.ts`
+for the same lookup used by the app, and `scripts/seed-from-templates.ts`'s
+`RefResolver.resolveByName` for this loader's copy of it. Only an exact,
+case-sensitive match counts; if nothing matches, you still get a clear error
+naming the unresolved value, not a silently-created duplicate.
+
 ## Column conventions
 
 - **Booleans** (`is_quilt_tagged`): `true` / `false`.
