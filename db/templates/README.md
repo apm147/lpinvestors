@@ -8,13 +8,23 @@ example — see [Current seed data](#current-seed-data) below. Append further
 rows the same way as you source more (government LP list monitoring, cap-table
 extraction), then load them into `lpinvestors_test` / the production database.
 
-**No load script exists yet** — populating these is Phase 1/2 work
-([`docs/DESIGN.md`](../../docs/DESIGN.md#8-phased-roadmap)), the load script
-that consumes them is not. The `ref_key` convention below is this template's
-proposed contract for that script, not a working tool yet. Until it exists,
-these can still be loaded by hand: resolve `ref_key`s to real UUIDs yourself
-(e.g. in a spreadsheet or a throwaway script) and `psql \copy` or `INSERT` the
-result.
+**Load them with `npm run db:seed`** (runs [`scripts/seed-from-templates.ts`](../../scripts/seed-from-templates.ts)
+against `$DATABASE_URL`, in the file order below, inside one transaction).
+Add `-- --dry-run` to resolve and validate everything — including every
+DB-side FK/enum/CHECK constraint — without writing anything:
+
+```bash
+npm run db:seed -- --dry-run   # validate only
+npm run db:seed                # commit for real
+```
+
+It's a plain loader, not an upsert: re-running it against data that's
+already loaded will fail (most likely on `org`'s `crn` or `programme`'s
+`name` uniqueness) and roll back the whole batch atomically — nothing
+partially written. Matching a new raw name against an entity that may
+already exist is the harder problem entity resolution proper is for
+(docs/DESIGN.md #3); this loader only knows the ref_keys and `crn:` lookups
+you give it explicitly.
 
 ## Files, in load order
 
@@ -51,9 +61,11 @@ or fund that's already loaded, rather than re-declaring it here).
 Every `*_ref` / `*_org_ref` / `*_fund_ref` / `*_programme_ref` /
 `*_person_ref` column elsewhere points to one of those `ref_key`s. If the
 target already exists in the database and you don't want to re-declare it,
-you may instead put its known `crn` directly in the `*_ref` column, prefixed
-`crn:` (e.g. `crn:01234567`) — this is the proposed convention for the future
-loader; until then, resolve it yourself.
+put its known `crn` directly in the `*_ref` column instead, prefixed `crn:`
+(e.g. `crn:01234567`) — the loader looks it up by `crn` rather than creating
+it. `crn:` lookups only work for `org` and `fund` (the only tables with a
+`crn` column); there's no natural key to look up an existing `person` or
+`programme` by, so those must always get a fresh `ref_key` row here.
 
 ## Column conventions
 
