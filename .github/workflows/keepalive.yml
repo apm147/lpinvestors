@@ -1,8 +1,14 @@
 name: Keep Neon + Render warm
 
+# Deactivated 2026-09-09: every scheduled run has been failing (confirmed
+# via run logs) because the APP_URL repo variable was never set --
+# Settings -> Secrets and variables -> Actions -> Variables -> APP_URL =
+# the deployed Render URL. That's the actual fix; this is a stopgap to
+# stop the noisy failing runs, not a statement that the workflow itself is
+# broken. Re-add the schedule block below once APP_URL is set.
 on:
-  schedule:
-    - cron: "0 */6 * * *"
+  # schedule:
+  #   - cron: "0 */6 * * *"
   workflow_dispatch: {}
 
 jobs:
